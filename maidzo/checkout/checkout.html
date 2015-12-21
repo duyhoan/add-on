@@ -1,0 +1,112 @@
+<md-content layout-padding>
+    <div ng-if="! vm.checkoutSuccess">
+        <form name="checkout">
+            <p class="md-subhead">Bạn hiện có <span class="mdc-text-red">{{vm.cart.getTotalItems()}}</span> sản phẩm với tổng trị giá <span class="mdc-text-red">{{vm.totalPrice | currency:'cny'}} (~{{vm.totalPrice | exchange:vm.exchangeRate}})</span> trong giỏ hàng. Vui lòng bấm vào đây để <a class="mdc-text-red" ui-sref="cart" style="text-decoration:none;">kiểm tra giỏ hàng</a>.</p>
+            <div layout="row">
+                <div flex="50">
+                    <md-input-container class="md-block">
+                        <label>Họ</label>
+                        <input type="text" ng-model="vm.customer.first_name" disabled>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Tên</label>
+                        <input type="text" ng-model="vm.customer.last_name" disabled>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Số điện thoại</label>
+                        <input type="text" ng-model="vm.customer.phone" disabled>
+                    </md-input-container>
+                </div>
+
+                <div flex="50">
+                    <md-input-container class="md-block">
+                        <label>Địa chỉ</label>
+                        <input type="text" ng-model="vm.customer.address" disabled>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Xã/Phường/Thị trấn</label>
+                        <input type="text" ng-model="vm.customer.ward.name" disabled>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Quận/Huyện</label>
+                        <input type="text" ng-model="vm.customer.district.name" disabled>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Tỉnh/Thành phố</label>
+                        <input type="text" ng-model="vm.customer.province.name" disabled>
+                    </md-input-container>
+                </div>
+            </div>
+            <div layout="column">
+                <md-button class="md-raised md-warn" ng-disabled="checkout.$invalid" ng-click="vm.submit()">Tạo đơn hàng</md-button>
+            </div>
+        </form>
+    </div>
+
+    <div ng-if="vm.checkoutSuccess">
+        <p class="md-subhead">Chúc mừng quý khách đã tạo thành công đơn hàng số <strong class="mdc-text-red">#{{ vm.order.id }}</strong>. Đơn hàng của quý khách cần được đặt cọc trước <strong class="mdc-text-red">{{vm.order.deposit_rate}}%</strong> tổng giá trị để chúng tôi có thể tiến hành đặt hàng. Vui lòng chọn một hình thức thanh toán dưới đây để được hướng dẫn:</p>
+
+        <md-radio-group ng-model="type" ng-init="type='vietcombank'" layout="row">
+            <md-radio-button class="md-primary" value="vietcombank">Vietcombank</md-radio-button>
+            <md-radio-button class="md-primary" value="techcombank">Techcombank</md-radio-button>
+            <md-radio-button class="md-primary" value="direct">Trực tiếp</md-radio-button>
+        </md-radio-group>
+        
+        <div ng-show="type != 'direct'">
+            <p class="mdc-text-red md-body-1"><em>Nội dung chuyển khoản:</em></p>
+            <md-content flex layout-padding class="mdc-bg-light-green" style="color:#fff">
+                Đặt cọc đơn hàng #{{vm.order.id}}
+            </md-content>
+        </div>
+        <div ng-show="type === 'vietcombank'">
+            <p class="mdc-text-red md-body-1"><em>Thông tin tài khoản:</em></p>
+            <md-content flex class="mdc-bg-light-green" style="color:#fff">
+                <md-list>
+                    <md-list-item>
+                        <p>Chủ tài khoản</p>
+                        <p class="md-secondary">Lê Mạnh Dũng</p>
+                    </md-list-item>
+                    <md-list-item>
+                        <p>Số tài khoản</p>
+                        <p class="md-secondary">0451000345868</p>
+                    </md-list-item>
+                    <md-list-item>
+                        <p>Chi nhánh</p>
+                        <p class="md-secondary">Thành công</p>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+        <div ng-show="type === 'techcombank'">
+            <p class="mdc-text-red md-body-1"><em>Thông tin tài khoản:</em></p>
+            <md-content flex class="mdc-bg-light-green" style="color:#fff">
+                <md-list>
+                    <md-list-item>
+                        <p>Chủ tài khoản</p>
+                        <p class="md-secondary">Lê Mạnh Dũng</p>
+                    </md-list-item>
+                    <md-list-item>
+                        <p>Số tài khoản</p>
+                        <p class="md-secondary">19028831085013</p>
+                    </md-list-item>
+                    <md-list-item>
+                        <p>Chi nhánh</p>
+                        <p class="md-secondary">Nguyễn Thị Định</p>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+        </div>
+        <div ng-show="type === 'direct'">
+            <p class="mdc-text-red md-body-1"><em>Địa chỉ trụ sở:</em></p>
+            <md-content flex layout-padding class="mdc-bg-light-green" style="color:#fff">
+                <p>
+                    102 Ngụy Như Kon Tum<br>
+                    Nhân Chính, Thanh Xuân<br>
+                    Hà Nội<br>
+                    +84.466833354<br>
+                    +84.1693382222
+                </p>
+            </md-content>
+        </div>
+    </div>
+</md-content>

@@ -1,0 +1,37 @@
+{
+   "background": {
+      "page": "background.html"
+   },
+   "browser_action": {
+      "default_icon": {
+         "19": "images/icon-19.png",
+         "38": "images/icon-38.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "Ứng dụng đặt hàng Mạidzô"
+   },
+   "content_scripts": [ {
+      "all_frames": false,
+      "css": [ "bower_components/bootstrap/dist/css/bootstrap.min.css", "bower_components/material-design-color-palette/css/material-design-color-palette.min.css", "fonts/material-icons/MaterialIcons.css", "bower_components/Buttons/css/buttons.min.css", "styles/addon.css" ],
+      "js": [ "bower_components/jquery/dist/jquery.min.js", "bower_components/bootstrap/dist/js/bootstrap.min.js", "bower_components/Buttons/js/buttons.js", "bower_components/js-url/url.min.js", "scripts/crawlers/alibabacrawler.js", "scripts/crawlers/jdcrawler.js", "scripts/crawlers/taobaocrawler.js", "scripts/crawlers/tmallcrawler.js", "scripts/crawlers/yougoucrawler.js", "scripts/contentscript.js" ],
+      "matches": [ "*://item.taobao.com/*", "*://world.taobao.com/item/*", "*://detail.tmall.com/*", "*://world.tmall.com/item/*", "*://*.yao.95095.com/*", "*://detail.1688.com/*", "*://item.jd.com/*", "*://www.yougou.com/*", "*://*.bing.com/" ],
+      "run_at": "document_end"
+   } ],
+   "default_locale": "vi",
+   "description": "__MSG_appDescription__",
+   "icons": {
+      "128": "images/icon-128.png",
+      "16": "images/icon-16.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgRl2vFYqYoo0iur0M0dPbYg6A1ycC/ND1w12bX9ZBfprnn+kDIOwGDnZ73wLmxDwq64xhXNJpbH9IFp/rez9V4GLPsTpZVi04ZJwsUsfJ/ojQEKVxc/7n40KI84qk2YPZPaxa9VbVZJQXwvInDXRNcNW/YkGWrM4eVapZXJaOjzlJ0oGcxEeMWE8AAvmglEW4woaB5V1fJLVHQoAQpc+fTPa7iHnMkkUQ0o3lKFhyI4CpCm4Wiewi7jakvHCUv7DBlrI8pW77tRGaFUmY+utCvErWiS01b/bYqFmrix3ajy5r3qKMpr3NfI9KSUfUZT/Tthx5Samd63B4e2rolMWTQIDAQAB",
+   "manifest_version": 2,
+   "name": "__MSG_appName__",
+   "options_ui": {
+      "chrome_style": true,
+      "page": "options.html"
+   },
+   "permissions": [ "tabs", "http://*/*", "https://*/*", "background", "contentSettings", "cookies", "debugger", "history", "idle", "management", "notifications", "pageCapture", "topSites", "storage", "webNavigation", "webRequest", "webRequestBlocking" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.1",
+   "web_accessible_resources": [ "images/icon-48.png", "fonts/material-icons/MaterialIcons-Regular.eot", "fonts/material-icons/MaterialIcons-Regular.woff2", "fonts/material-icons/MaterialIcons-Regular.woff", "fonts/material-icons/MaterialIcons-Regular.ttf", "mzContent/toolbar.html" ]
+}

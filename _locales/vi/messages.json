@@ -1,0 +1,31 @@
+{
+   "addToCartSuccess": {
+      "message": "Sản phẩm đã được thêm vào giỏ hàng!"
+   },
+   "appDescription": {
+      "description": "The description of the application",
+      "message": "Công cụ đặt hàng Mạidzô.vn, hỗ trợ đặt mua hàng từ những trang mạng taobao.com, tmall.com, 1688.com, alibaba.com, jd.com..."
+   },
+   "appName": {
+      "description": "The name of the application",
+      "message": "Mạidzô.vn"
+   },
+   "appNewUpdate": {
+      "message": "Công cụ đặt hàng Mạidzô.vn có phiên bản mới, vui lòng khởi động lại trình duyệt để được cập nhật tự động!"
+   },
+   "chooseAtLeastOneProduct": {
+      "message": "Để đặt hàng, tổng số lượng sản phẩm bạn chọn phải lớn hơn 0"
+   },
+   "noteLabel": {
+      "message": "GHI CHÚ"
+   },
+   "noteTextareaPlaceholder": {
+      "message": "Yêu cầu khi đặt hàng"
+   },
+   "setValueForEveryOption": {
+      "message": "Bạn phải chọn đầy đủ thuộc tính trước khi tiếp tục!"
+   },
+   "stockNotEnough": {
+      "message": "Số lượng đặt mua không được lớn hơn số lượng hàng trong kho!"
+   }
+}

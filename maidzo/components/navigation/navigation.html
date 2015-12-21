@@ -1,0 +1,35 @@
+<div ng-controller="NavigationController as vm">
+    <md-toolbar class="md-warn">
+        <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Settings" ng-click="vm.openSideNav()">
+            <md-icon>menu</md-icon>
+        </md-button>
+        <h2><span>Công cụ đặt hàng Mạidzô.vn</span></h2>
+        </div>
+    </md-toolbar>
+
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="navLeft">
+        <md-toolbar class="md-primary md-hue-2">
+            <h1 class="md-toolbar-tools">Menu</h1>
+        </md-toolbar>
+        <md-content>
+            <md-list>
+                <md-list-item ui-sref="home" ng-click="vm.closeSideNav()">
+                    <p class="md-body-1">Trang chủ</p>
+                </md-list-item>
+
+                <md-list-item ui-sref="cart" ng-click="vm.closeSideNav()">
+                    <p class="md-body-1">Giỏ hàng</p>
+                </md-list-item>
+
+                <md-list-item ui-sref="auth.login" ng-click="vm.closeSideNav()" ng-if="! vm.isAuthenticated">
+                    <p class="md-body-1">Đăng nhập</p>
+                </md-list-item>
+
+                <md-list-item ui-sref="auth.logout" ng-click="vm.closeSideNav()" ng-if="vm.isAuthenticated">
+                    <p class="md-body-1">Thoát</p>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-sidenav>
+</div>

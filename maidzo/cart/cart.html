@@ -1,0 +1,48 @@
+<div ng-controller="CartController as vm">
+    <md-content layout-padding ng-if="vm.cart.getTotalItems() > 0">
+        <div layout="column">
+            <p class="md-subhead">Bạn hiện có <span class="mdc-text-red">{{vm.cart.getTotalItems()}}</span> sản phẩm với tổng trị giá <span class="mdc-text-red">{{vm.totalPrice | currency:'cny'}} (~{{vm.totalPrice | exchange:vm.exchangeRate}})</span> trong giỏ hàng. Vui lòng bấm vào đây để <a class="mdc-text-red" ui-sref="checkout" style="text-decoration:none;">tạo đơn hàng</a>.</p>
+            <ul style="padding-left:20px;margin-top:0px;">
+                <li style="padding-bottom:5px;"><em>Tỉ giá quy đổi hôm nay là: <strong>{{1 | currency:'cny'}} = {{vm.exchangeRate | currency:'vnd'}}</strong></em></li>
+                <li style="padding-bottom:5px;"><em><strong>Phí vận chuyển nội địa</strong> chỉ mang tính tương đối và có thể <strong>thấp hơn</strong> nếu <strong>nhiều sản phẩm</strong> được mua <strong>cùng cửa hàng</strong>, chúng tôi sẽ báo giá cụ thể sau khi nhận được đơn hàng.</em></li>
+                <li style="padding-bottom:5px;"><em>Báo giá dưới đây chưa bao gồm <strong>phí dịch vụ</strong> đặt hàng.</em></li>
+            </ul>
+        </div>
+
+        <md-list>
+            <md-list-item class="md-4-line" ng-repeat="item in vm.cart.getItems()">
+                <img ng-src="{{item.getData().image}}" class="md-avatar">
+                <div class="md-list-item-text">
+                    <h4 style="margin:5px 0px;">
+                        <a class="mdc-text-red" href="{{item.getData().detail_url}}" target="_blank" style="text-decoration:none;">{{item.getName()}}</a>
+                    </h4>
+                    <h4 style="margin:5px 0px;">{{item.getData().options}}</h4>
+                    <p style="margin:5px 0px;">
+                        Số lượng: <span class="mdc-text-green">{{item.getQuantity()}}</span>
+                        Đơn giá: <span class="mdc-text-green">{{item.getPrice() | currency:'cny'}}</span>
+                        Phí vc: <span class="mdc-text-green">{{item.getData().shipping | currency:'cny'}}
+                    </p>
+                    <p style="margin:5px 0px;">
+                        Thành tiền:
+                        (({{item.getPrice()}} x {{item.getQuantity()}}) + {{item.getData().shipping}}) x {{vm.exchangeRate}}
+                        =
+                        <span class="mdc-text-red"><strong>{{(item.getPrice() * item.getQuantity()) + item.getData().shipping | exchange:vm.exchangeRate}}</strong></span>
+                    </p>
+                    <p style="margin:5px 0px;" ng-if="item.getData().comment">Ghi chú: <span class="mdc-text-green">{{item.getData().comment}}</span></p>
+                </div>
+                <md-button class="md-secondary md-icon-button" aria-label="Xóa khỏi giỏ" ng-click="vm.sendDeleteMsgToBackground(item.getId())">
+                    <md-tooltip md-direction="left" md-visible="tooltipVisible">Xóa khỏi giỏ</md-tooltip>
+                    <md-icon>delete</md-icon>
+                </md-button>
+                <md-divider md-inset ng-if="!$last"></md-divider>
+            </md-list-item>
+        </md-list>
+    </md-content>
+
+    <md-content layout-padding ng-if="vm.cart.getTotalItems() === 0">
+        <div layout="column" layout-align="center center">
+            <md-icon style="font-size:48px; margin-bottom:10px;">shopping_cart</md-icon>
+            <h2 class="mdc-text-red">Chưa có sản phẩm trong giỏ hàng</h2>
+        </div>
+    </md-content>
+</div>

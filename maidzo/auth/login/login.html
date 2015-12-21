@@ -1,0 +1,23 @@
+<div ng-controller="LoginController as vm">
+    <md-content layout-padding>
+        <form name="login">
+            <div layout="column">
+                <div layout="column" layout-align="center center">
+                    <h3 class="md-headline mdc-text-blue">Đăng nhập</h3>
+                </div>
+
+                <md-input-container class="md-block">
+                    <label>Email</label>
+                    <input type="text" ng-model="vm.user.email" required>
+                </md-input-container>
+
+                <md-input-container flex>
+                    <label>Mật khẩu</label>
+                    <input type="password" ng-model="vm.user.password" required>
+                </md-input-container>
+
+                <md-button class="md-raised md-warn" ng-disabled="login.$invalid" ng-click="vm.submit()">Đăng nhập</md-button>
+            </div>
+        </form>
+    </md-content>
+</div>
