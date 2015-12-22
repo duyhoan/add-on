@@ -12,17 +12,17 @@ try {
                 textarea = document.createElement('TEXTAREA');
             textarea.placeholder = chrome.i18n.getMessage('noteTextareaPlaceholder'), textarea.id = 'orderNoteTextarea', textarea.rows = '2';
             var tmpDL = document.createElement('DL');
-            tmpDL.id = 'maidzo-dl';
+            tmpDL.id = 'chuyenhang365-dl';
             var tmpDT = document.createElement('DT');
-            tmpDT.id = 'maidzo-dt';
+            tmpDT.id = 'chuyenhang365-dt';
             var tmpDD = document.createElement('DD');
-            if (tmpDD.id = 'maidzo-dd', tmpDD.appendChild(textarea), tmpDL.appendChild(tmpDT), tmpDL.appendChild(tmpDD), tmpDT.textContent = chrome.i18n.getMessage('noteLabel'), tmpDT.style.transform = 'translateY(-120%)', 'detail.1688.com' === store) {
+            if (tmpDD.id = 'chuyenhang365-dd', tmpDD.appendChild(textarea), tmpDL.appendChild(tmpDT), tmpDL.appendChild(tmpDD), tmpDT.textContent = chrome.i18n.getMessage('noteLabel'), tmpDT.style.transform = 'translateY(-120%)', 'detail.1688.com' === store) {
                 var objOrder = document.querySelector('.mod-detail-purchasing').querySelector('.obj-order');
                 textarea.cols = '55', tmpDT.style.marginRight = '20px', document.querySelector('.mod-detail-purchasing').querySelector('.d-content').insertBefore(tmpDL, objOrder)
-            } else if ('detail.tmall.com' === store || 'world.tmall.com' === store) {
+            } else if ('detail.tmall.com' === store || 'world.tmall.com' === store || 'taiwan.tmall.com' === store) {
                 var tbAction = document.querySelector('#J_DetailMeta').querySelector('div.tb-action');
                 document.querySelector('#J_DetailMeta').querySelector('.tb-sku').insertBefore(tmpDL, tbAction)
-            } else if ('item.taobao.com' === store || 'world.taobao.com' === store) {
+            } else if ('item.taobao.com' === store || 'world.taobao.com' === store || 'taiwan.taobao.com' === store) {
                 var JBoxBuycart = document.querySelector('#J_box_buycart');
                 try {
                     document.querySelector('#J_isSku').insertBefore(tmpDL, JBoxBuycart)
@@ -40,7 +40,7 @@ try {
                 var callbackFunc, data, url = window.location.href,
                     store = $.url('hostname'),
                     xmlHttp = new XMLHttpRequest;
-                'detail.1688.com' === store ? callbackFunc = crawlInfo1688 : 'detail.tmall.com' === store || 'world.tmall.com' === store ? callbackFunc = crawlInfoTmall : 'item.taobao.com' === store || 'world.taobao.com' === store ? callbackFunc = crawlInfoTaobao : 'item.jd.com' === store ? callbackFunc = crawlInfoJd : 'www.yougou.com' === store && (callbackFunc = crawInfoYougou), xmlHttp.onreadystatechange = function() {
+                'detail.1688.com' === store ? callbackFunc = crawlInfo1688 : 'detail.tmall.com' === store || 'world.tmall.com' === store || 'taiwan.tmall.com' === store ? callbackFunc = crawlInfoTmall : 'item.taobao.com' === store || 'world.taobao.com' === store || 'taiwan.taobao.com' === store ? callbackFunc = crawlInfoTaobao : 'item.jd.com' === store ? callbackFunc = crawlInfoJd : 'www.yougou.com' === store && (callbackFunc = crawInfoYougou), xmlHttp.onreadystatechange = function() {
                     4 === xmlHttp.readyState && 200 === xmlHttp.status && (data = callbackFunc(xmlHttp.responseText), console.log(data), chrome.runtime.sendMessage({
                         type: 'addToCart',
                         productData: data
@@ -48,18 +48,18 @@ try {
                 }, xmlHttp.open('GET', url, !0), xmlHttp.send(null)
             }, document.getElementById('openOrder').onclick = function() {
                 var store = $.url('hostname'),
-                    website_url = 'http://maidzo.xyz/#!/',
+                    website_url = 'http://chuyenhang365.com/#/cart',
                     itemId = '',
                     orderUrl = '';
-                if ('item.taobao.com' === store) itemId = $.url('?id'), orderUrl = website_url + 'shop/products/taobao/' + itemId;
-                else if ('world.taobao.com' === store) itemId = $.url('filename'), orderUrl = website_url + 'shop/products/taobao/' + itemId;
-                else if ('detail.tmall.com' === store) itemId = $.url('?id'), orderUrl = website_url + 'shop/products/tmall/' + itemId;
-                else if ('world.tmall.com' === store) itemId = $.url('filename'), orderUrl = website_url + 'shop/products/tmall/' + itemId;
-                else {
-                    if ('detail.1688.com' !== store) return void alert('Có lỗi xảy ra hoặc website chưa được hỗ trợ!');
-                    itemId = $.url('filename'), orderUrl = website_url + 'shop/products/alibaba/' + itemId
-                }
-                window.location.href = orderUrl
+                // if ('item.taobao.com' === store) itemId = $.url('?id'), orderUrl = website_url + 'shop/products/taobao/' + itemId;
+                // else if ('world.taobao.com' === store) itemId = $.url('filename'), orderUrl = website_url + 'shop/products/taobao/' + itemId;
+                // else if ('detail.tmall.com' === store) itemId = $.url('?id'), orderUrl = website_url + 'shop/products/tmall/' + itemId;
+                // else if ('world.tmall.com' === store) itemId = $.url('filename'), orderUrl = website_url + 'shop/products/tmall/' + itemId;
+                // else {
+                //     if ('detail.1688.com' !== store) return void alert('Có lỗi xảy ra hoặc website chưa được hỗ trợ!');
+                //     itemId = $.url('filename'), orderUrl = website_url + 'shop/products/alibaba/' + itemId
+                // }
+                window.location.href = website_url
             }, document.getElementById('openCart').onclick = function() {
                 var url = chrome.extension.getURL('popup.html#/cart');
                 chrome.runtime.sendMessage({

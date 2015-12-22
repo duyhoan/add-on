@@ -11,7 +11,7 @@ function() {
     urlSafe.$inject = ['$compileProvider'];
 
     function authConfig($authProvider) {
-        $authProvider.baseUrl = 'http://api.maidzo.xyz/', $authProvider.tokenPrefix = 'maidzo'
+        $authProvider.baseUrl = 'http://chuyenhang365.com/', $authProvider.tokenPrefix = 'maidzo'
     }
     authConfig.$inject = ['$authProvider'];
 
@@ -68,7 +68,7 @@ function() {
     angular.module('maidzo').constant('ENV', {
         name: 'development',
         API_CONFIG: {
-            url: 'http://api.maidzo.xyz/'
+            url: 'http://chuyenhang365.com/'
         },
         SITE_CONFIG: {
             url: 'http://localhost:3000/'
@@ -121,7 +121,8 @@ function() {
     getAuth.$inject = ['$rootScope', '$state', '$location', '$auth'];
 
     function currencyConfig($http, ENV, localStorageService) {
-        $http.get(ENV.API_CONFIG.url + 'config').then(function(response) {
+        $http.get('http://api.maidzo.xyz/' + 'config').then(function(response) {
+            console.log(response);
             localStorageService.set('currency', response.data.currency)
         })
     }

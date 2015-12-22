@@ -14,7 +14,7 @@
       "all_frames": false,
       "css": [ "bower_components/bootstrap/dist/css/bootstrap.min.css", "bower_components/material-design-color-palette/css/material-design-color-palette.min.css", "fonts/material-icons/MaterialIcons.css", "bower_components/Buttons/css/buttons.min.css", "styles/addon.css" ],
       "js": [ "bower_components/jquery/dist/jquery.min.js", "bower_components/bootstrap/dist/js/bootstrap.min.js", "bower_components/Buttons/js/buttons.js", "bower_components/js-url/url.min.js", "scripts/crawlers/alibabacrawler.js", "scripts/crawlers/jdcrawler.js", "scripts/crawlers/taobaocrawler.js", "scripts/crawlers/tmallcrawler.js", "scripts/crawlers/yougoucrawler.js", "scripts/contentscript.js" ],
-      "matches": [ "*://item.taobao.com/*", "*://world.taobao.com/item/*", "*://detail.tmall.com/*", "*://world.tmall.com/item/*", "*://*.yao.95095.com/*", "*://detail.1688.com/*", "*://item.jd.com/*", "*://www.yougou.com/*", "*://*.bing.com/" ],
+      "matches": [ "*://item.taobao.com/*", "*://world.taobao.com/item/*", "*://taiwan.taobao.com/item/*", "*://detail.tmall.com/*", "*://world.tmall.com/item/*","*://taiwan.tmall.com/item/*", "*://*.yao.95095.com/*", "*://detail.1688.com/*", "*://item.jd.com/*", "*://www.yougou.com/*", "*://*.bing.com/" ],
       "run_at": "document_end"
    } ],
    "default_locale": "vi",
