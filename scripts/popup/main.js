@@ -122,7 +122,6 @@ function() {
 
     function currencyConfig($http, ENV, localStorageService) {
         $http.get('http://api.maidzo.xyz/' + 'config').then(function(response) {
-            console.log(response);
             localStorageService.set('currency', response.data.currency)
         })
     }
@@ -234,7 +233,8 @@ function() {
 
     function CheckoutController(userData, ngCart, localStorageService, $http, $state, $mdToast, ENV) {
         function submit() {
-            $http.post(ENV.API_CONFIG.url + 'shop/checkout', {
+            
+            $http.post(ENV.API_CONFIG.url + 'api/shop_module/cart/', {
                 items: vm.cart.getItems(),
                 customer: vm.customer
             }).then(function(response) {

@@ -67,11 +67,12 @@ try {
                     url: url
                 })
             }, document.getElementById('openCheckout').onclick = function() {
-                var url = chrome.extension.getURL('popup.html#/checkout');
-                chrome.runtime.sendMessage({
-                    type: 'openUrl',
-                    url: url
-                })
+                //var url = chrome.extension.getURL('popup.html#/checkout');
+                console.log(vm.cart.getItems);
+                // chrome.runtime.sendMessage({
+                //     type: 'openUrl',
+                //     url: url
+                // })
             }, document.getElementById('openInfo').onclick = function() {
                 chrome.runtime.sendMessage({
                     type: 'refresh'

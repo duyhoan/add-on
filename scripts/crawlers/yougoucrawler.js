@@ -33,18 +33,42 @@ function crawInfoYougou(responseHTML) {
     return {
         success: !0,
         message: chrome.i18n.getMessage('addToCartSuccess'),
+        // data: [{
+        //     id: 'yougou_' + id,
+        //     title: title,
+        //     price: price,
+        //     shipping_price: shippingPrice,
+        //     image: productImage,
+        //     shop_name: shopName,
+        //     shop_seller: shopSeller,
+        //     option: optionJsonStr,
+        //     quantity: amount,
+        //     url: url,
+        //     comment: comment
+        // }]
         data: [{
-            id: 'yougou_' + id,
-            title: title,
+            category_list: "",
+            currency: "CNY",
+            html: "",
+            fragile: false,
+            insurance: false,
+            sku: 'yougou_' + id,
+            vendor: "",
+            shopping_domain: document.domain,
+            name: title,
+            short_description: title,
             price: price,
             shipping_price: shippingPrice,
-            image: productImage,
+            image_url: productImage,
             shop_name: shopName,
             shop_seller: shopSeller,
-            option: optionJsonStr,
+            options_selected: optionJsonStr,
+            options_metadata: "",
             quantity: amount,
-            url: url,
-            comment: comment
+            detail_url: url,
+            note: comment,
+            weight: 0,
+            shipping: 0
         }]
     }
 }
