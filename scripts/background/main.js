@@ -8,14 +8,14 @@
                 if (message.productData.success) {
                     var id, name, price, quantity, data, i;
                     for (i = 0; i < message.productData.data.length; i++) id = message.productData.data[i].id + message.productData.data[i].option, name = message.productData.data[i].title, price = message.productData.data[i].price, quantity = message.productData.data[i].quantity, data = {
-                        detail_url: message.productData.data[i].url,
+                        detail_url: message.productData.data[i].detail_url,
                         item_id: message.productData.data[i].id,
                         shipping: message.productData.data[i].shipping_price,
-                        image: message.productData.data[i].image,
+                        image: message.productData.data[i].image_url,
                         shop_name: message.productData.data[i].shop_name,
                         shop_seller: message.productData.data[i].shop_seller,
-                        options: message.productData.data[i].option,
-                        comment: message.productData.data[i].comment ? message.productData.data[i].comment : '',
+                        options: message.productData.data[i].options_selected,
+                        comment: message.productData.data[i].note ? message.productData.data[i].note : '',
                         currency: 'cny'
                     }, vm.cart.addItem(id, name, price, quantity, data)
                 }

@@ -41,10 +41,36 @@ try {
                     store = $.url('hostname'),
                     xmlHttp = new XMLHttpRequest;
                 'detail.1688.com' === store ? callbackFunc = crawlInfo1688 : 'detail.tmall.com' === store || 'world.tmall.com' === store || 'taiwan.tmall.com' === store ? callbackFunc = crawlInfoTmall : 'item.taobao.com' === store || 'world.taobao.com' === store || 'taiwan.taobao.com' === store ? callbackFunc = crawlInfoTaobao : 'item.jd.com' === store ? callbackFunc = crawlInfoJd : 'www.yougou.com' === store && (callbackFunc = crawInfoYougou), xmlHttp.onreadystatechange = function() {
-                    4 === xmlHttp.readyState && 200 === xmlHttp.status && (data = callbackFunc(xmlHttp.responseText), console.log(data), chrome.runtime.sendMessage({
-                        type: 'addToCart',
-                        productData: data
-                    }, function(response) {}))
+                    4 === xmlHttp.readyState && 200 === xmlHttp.status && (data = callbackFunc(xmlHttp.responseText), 
+                        console.log(data['data'][0]),
+                        $.ajax({
+                            url: 'http://chuyenhang365.com/api/shop_module/cart/',
+                            type: "POST",
+                            dataType: "json",
+                            data: JSON.stringify(data['data'][0]),
+                            contentType: "application/json; charset=UTF-8",
+                            //xhrFields: {
+                            //  withCredentials: true
+                            //},
+                            beforeSend: function() {
+                                $('#box-confirm-nh-site').remove();
+                            },
+                            success: function(data_response, textStatus, jqXHR) {
+                                chrome.runtime.sendMessage({
+                                    type: 'addToCart',
+                                    productData: data
+                                }) 
+                            },
+                            error: function( jqXHR, textStatus, errorThrown ) {
+                                n.removeDisabledButtonCart();
+                                msg = "Có lỗi xảy ra (cần đăng nhập trước khi đặt hàng):"+textStatus
+                                alert(msg)
+                                //$("body").append(msg)
+                                console.log(jqXHR);
+                            }
+                        })
+                        
+                    )
                 }, xmlHttp.open('GET', url, !0), xmlHttp.send(null)
             }, document.getElementById('openOrder').onclick = function() {
                 var store = $.url('hostname'),
