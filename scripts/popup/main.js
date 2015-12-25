@@ -216,7 +216,9 @@ function() {
         var vm = this;
         vm.cart = ngCart, vm.exchangeRate = localStorageService.get('currency').vnd.rate.cny, vm.totalPrice = 0, angular.forEach(vm.cart.getItems(), function(item) {
             vm.totalPrice += item.getPrice() * item.getQuantity() + item.getData().shipping
-        }), vm.sendDeleteMsgToBackground = function(id) {
+        }), 
+        console.log(vm.cart)
+        vm.sendDeleteMsgToBackground = function(id) {
             chrome.runtime.sendMessage({
                 type: 'removeFromCart',
                 itemId: id

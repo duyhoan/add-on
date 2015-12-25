@@ -56,10 +56,33 @@ try {
                                 $('#box-confirm-nh-site').remove();
                             },
                             success: function(data_response, textStatus, jqXHR) {
-                                chrome.runtime.sendMessage({
-                                    type: 'addToCart',
-                                    productData: data
-                                }) 
+                                $.ajax({
+                                    url: 'http://chuyenhang365.com/api/shop_module/cart/?page_size=1000',
+                                    type: "GET",
+                                    dataType: "json",
+                                    //data: JSON.stringify(data['data'][0]),
+                                    contentType: "application/json; charset=UTF-8",
+                                    //xhrFields: {
+                                    //  withCredentials: true
+                                    //},
+                                    beforeSend: function() {
+                                        $('#box-confirm-nh-site').remove();
+                                    },
+                                    success: function(data_response, textStatus, jqXHR) {
+                                        console.log(data_response);
+                                        chrome.runtime.sendMessage({
+                                            type: 'addToCart',
+                                            productData: data_response
+                                        }); 
+                                    },
+                                    error: function( jqXHR, textStatus, errorThrown ) {
+                                        n.removeDisabledButtonCart();
+                                        msg = "Có lỗi xảy ra (cần đăng nhập trước khi đặt hàng):"+textStatus
+                                        alert(msg)
+                                        //$("body").append(msg)
+                                        console.log(jqXHR);
+                                    }
+                                });
                             },
                             error: function( jqXHR, textStatus, errorThrown ) {
                                 n.removeDisabledButtonCart();
