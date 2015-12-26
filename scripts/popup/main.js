@@ -11,7 +11,7 @@ function() {
     urlSafe.$inject = ['$compileProvider'];
 
     function authConfig($authProvider) {
-        $authProvider.baseUrl = 'http://chuyenhang365.com/', $authProvider.tokenPrefix = 'maidzo'
+        $authProvider.baseUrl = 'http://chuyenhang365.com/api/user/', $authProvider.tokenPrefix = 'chuyenhang365'
     }
     authConfig.$inject = ['$authProvider'];
 
@@ -46,18 +46,6 @@ function() {
         }).state('cart', {
             url: '/cart',
             templateUrl: 'maidzo/cart/cart.html'
-        }).state('checkout', {
-            url: '/checkout',
-            templateUrl: 'maidzo/checkout/checkout.html',
-            controller: 'CheckoutController as vm',
-            data: {
-                authenticate: !0
-            },
-            resolve: {
-                userData: ['AuthService', function(AuthService) {
-                    return AuthService.getAccount()
-                }]
-            }
         })
     }
     routeConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
@@ -212,44 +200,79 @@ function() {
 function() {
     'use strict';
 
-    function CartController(ngCart, localStorageService, $mdToast) {
+    function CartController(ngCart, localStorageService, $scope, $mdToast) {
         var vm = this;
-        vm.cart = ngCart, vm.exchangeRate = localStorageService.get('currency').vnd.rate.cny, vm.totalPrice = 0, angular.forEach(vm.cart.getItems(), function(item) {
-            vm.totalPrice += item.getPrice() * item.getQuantity() + item.getData().shipping
-        }), 
-        console.log(vm.cart)
-        vm.sendDeleteMsgToBackground = function(id) {
-            chrome.runtime.sendMessage({
-                type: 'removeFromCart',
-                itemId: id
-            }, function(response) {
-                'success' === response.removeFromCart && $mdToast.showSimple('Xóa sản phẩm thành công!')
-            }), vm.cart.removeItemById(id)
-        }
-    }
-    CartController.$inject = ['ngCart', 'localStorageService', '$mdToast'];
-    angular.module('maidzo').controller('CartController', CartController)
-}(),
-function() {
-    'use strict';
-
-    function CheckoutController(userData, ngCart, localStorageService, $http, $state, $mdToast, ENV) {
-        function submit() {
-            
-            $http.post(ENV.API_CONFIG.url + 'api/shop_module/cart/', {
-                items: vm.cart.getItems(),
-                customer: vm.customer
-            }).then(function(response) {
-                vm.cart.empty(), vm.checkoutSuccess = !0, vm.order = response.data.data
-            }, function() {
-                $mdToast.showSimple('Có lỗi xảy ra, vui lòng liên hệ bộ phận kỹ thuật!')
+        vm.cart = ngCart;
+        $.ajax({
+            url: 'http://chuyenhang365.com/api/shop_module/cart/?page_size=1000',
+            type: "GET",
+            dataType: "json",
+            //data: JSON.stringify(data['data'][0]),
+            contentType: "application/json; charset=UTF-8",
+            //xhrFields: {
+            //  withCredentials: true
+            //},
+            beforeSend: function() {
+                $('#box-confirm-nh-site').remove();
+            },
+            success: function(data_response, textStatus, jqXHR) {
+                var id, name, price, quantity, data, i;
+                for (i = 0; i < data_response.results.length; i++) id = data_response.results[i].id + data_response.results[i].options_selected, name = data_response.results[i].name, price = data_response.results[i].price, quantity = data_response.results[i].quantity, data = {
+                    detail_url: data_response.results[i].detail_url,
+                    cart_id: data_response.results[i].id,
+                    item_id: data_response.results[i].sku,
+                    shipping: data_response.results[i].shipping,
+                    image: data_response.results[i].image_url,
+                    //shop_name: message.productData.results[i].shop_name,
+                    //shop_seller: message.productData.results[i].shop_seller,
+                    options: data_response.results[i].options_selected,
+                    comment: data_response.results[i].note ? data_response.results[i].note : '',
+                    currency: 'cny'
+                }, vm.cart.addItem(id, name, price, quantity, data)
+            },
+            error: function( jqXHR, textStatus, errorThrown ) {
+                n.removeDisabledButtonCart();
+                msg = "Có lỗi xảy ra (cần đăng nhập trước khi đặt hàng):"+textStatus
+                alert(msg)
+                //$("body").append(msg)
+                console.log(jqXHR);
+            }
+        });
+        vm.exchangeRate = localStorageService.get('currency').vnd.rate.cny, vm.totalPrice = 0, angular.forEach(vm.cart.getItems(), function(item) {
+            vm.totalPrice = parseFloat(vm.totalPrice) + (parseFloat(item.getPrice()) * parseInt(item.getQuantity())) + parseFloat(item.getData().shipping);
+        }),
+        vm.sendDeleteMsgToBackground = function(id,itemId) {
+            $.ajax({
+                url: 'http://chuyenhang365.com/api/shop_module/cart/'+id+'/',
+                type: "DELETE",
+                dataType: "json",
+                //data: JSON.stringify(data['data'][0]),
+                contentType: "application/json; charset=UTF-8",
+                //xhrFields: {
+                //  withCredentials: true
+                //},
+                beforeSend: function() {
+                    $('#box-confirm-nh-site').remove();
+                },
+                success: function(data_response, textStatus, jqXHR) {
+                    chrome.runtime.sendMessage({
+                        type: 'removeFromCart',
+                        itemId: id
+                    }, function(response) {
+                        'success' === response.removeFromCart && $mdToast.showSimple('Xóa sản phẩm thành công!')
+                    });
+                    vm.cart.removeItemById(itemId);
+                },
+                error: function( jqXHR, textStatus, errorThrown ) {
+                    n.removeDisabledButtonCart();
+                    msg = "Có lỗi xảy ra (cần đăng nhập trước khi đặt hàng):"+textStatus
+                    alert(msg)
+                    //$("body").append(msg)
+                    console.log(jqXHR);
+                }
             })
         }
-        var vm = this;
-        vm.cart = ngCart, vm.exchangeRate = localStorageService.get('currency').vnd.rate.cny, vm.totalPrice = 0, angular.forEach(vm.cart.getItems(), function(item) {
-            vm.totalPrice += item.getPrice() * item.getQuantity() + item.getData().shipping
-        }), vm.customer = userData.data.customer.data, vm.submit = submit
     }
-    CheckoutController.$inject = ['userData', 'ngCart', 'localStorageService', '$http', '$state', '$mdToast', 'ENV'];
-    angular.module('maidzo').controller('CheckoutController', CheckoutController)
+    CartController.$inject = ['ngCart', 'localStorageService', '$scope', '$mdToast'];
+    angular.module('maidzo').controller('CartController', CartController)
 }();

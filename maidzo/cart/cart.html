@@ -1,7 +1,7 @@
 <div ng-controller="CartController as vm">
     <md-content layout-padding ng-if="vm.cart.getTotalItems() > 0">
         <div layout="column">
-            <p class="md-subhead">Bạn hiện có <span class="mdc-text-red">{{vm.cart.getTotalItems()}}</span> sản phẩm với tổng trị giá <span class="mdc-text-red">{{vm.totalPrice | currency:'cny'}} (~{{vm.totalPrice | exchange:vm.exchangeRate}})</span> trong giỏ hàng. Vui lòng bấm vào đây để <a class="mdc-text-red" ui-sref="checkout" style="text-decoration:none;">tạo đơn hàng</a>.</p>
+            <p class="md-subhead">Bạn hiện có <span class="mdc-text-red">{{vm.cart.getTotalItems()}}</span> sản phẩm với tổng trị giá <span class="mdc-text-red">{{vm.totalPrice | currency:'cny'}} (~{{vm.totalPrice | exchange:vm.exchangeRate}})</span> trong giỏ hàng.</p>
             <ul style="padding-left:20px;margin-top:0px;">
                 <li style="padding-bottom:5px;"><em>Tỉ giá quy đổi hôm nay là: <strong>{{1 | currency:'cny'}} = {{vm.exchangeRate | currency:'vnd'}}</strong></em></li>
                 <li style="padding-bottom:5px;"><em><strong>Phí vận chuyển nội địa</strong> chỉ mang tính tương đối và có thể <strong>thấp hơn</strong> nếu <strong>nhiều sản phẩm</strong> được mua <strong>cùng cửa hàng</strong>, chúng tôi sẽ báo giá cụ thể sau khi nhận được đơn hàng.</em></li>
@@ -30,7 +30,7 @@
                     </p>
                     <p style="margin:5px 0px;" ng-if="item.getData().comment">Ghi chú: <span class="mdc-text-green">{{item.getData().comment}}</span></p>
                 </div>
-                <md-button class="md-secondary md-icon-button" aria-label="Xóa khỏi giỏ" ng-click="vm.sendDeleteMsgToBackground(item.getId())">
+                <md-button class="md-secondary md-icon-button" aria-label="Xóa khỏi giỏ" ng-click="vm.sendDeleteMsgToBackground(item.getData().cart_id,item.getId())">
                     <md-tooltip md-direction="left" md-visible="tooltipVisible">Xóa khỏi giỏ</md-tooltip>
                     <md-icon>delete</md-icon>
                 </md-button>

@@ -5,27 +5,20 @@
         var vm = this;
         vm.cart = ngCart, chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             if ('addToCart' === message.type) {
-                if (message.productData.success) {
-                    var id, name, price, quantity, data, i;
-                    for (i = 0; i < message.productData.results.length; i++) 
-                        id = message.productData.results[i].id + message.productData.results[i].options_selected,
-                        cart_id = message.productData.results[i].id, 
-                        name = message.productData.results[i].name, 
-                        price = message.productData.results[i].price, 
-                        quantity = message.productData.results[i].quantity, 
-                        data = {
-                            detail_url: message.productData.results[i].detail_url,
-                            item_id: message.productData.results[i].sku,
-                            shipping: message.productData.results[i].shipping,
-                            image: message.productData.results[i].image_url,
-                            shop_name: message.productData.results[i].shop_name,
-                            shop_seller: message.productData.results[i].shop_seller,
-                            options: message.productData.results[i].options_selected,
-                            comment: message.productData.results[i].note ? message.productData.results[i].note : '',
-                            currency: 'cny'
-                        }, 
-                        vm.cart.addItem(id, name, price, quantity, data)
-                }
+                // if (message.productData.success) {
+                //     var id, name, price, quantity, data, i;
+                //     for (i = 0; i < message.productData.results.length; i++) id = message.productData.results[i].id + message.productData.results[i].options_selected, name = message.productData.results[i].name, price = message.productData.results[i].price, quantity = message.productData.results[i].quantity, data = {
+                //         detail_url: message.productData.results[i].detail_url,
+                //         item_id: message.productData.results[i].sku,
+                //         shipping: message.productData.results[i].shipping,
+                //         image: message.productData.results[i].image_url,
+                //         //shop_name: message.productData.results[i].shop_name,
+                //         //shop_seller: message.productData.results[i].shop_seller,
+                //         options: message.productData.results[i].options_selected,
+                //         comment: message.productData.results[i].note ? message.productData.results[i].note : '',
+                //         currency: 'cny'
+                //     }, vm.cart.addItem(id, name, price, quantity, data)
+                // }
                 var myMessage = {
                     type: 'basic',
                     title: 'Thông báo',
