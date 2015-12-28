@@ -43,29 +43,34 @@ function crawlInfo1688(responseHTML) {
         data: []
     };
     for (tmpObj = {
-            id: 'alibaba_' + id,
-            title: title,
+            category_list: "",
+            currency: "CNY",
+            html: "",
+            fragile: false,
+            insurance: false,
+            sku: 'alibaba_' + id,
+            name: title,
             shop_name: shopName,
             shop_seller: shopSeller,
-            comment: comment,
-            shipping_price: 0,
-            url: url
+            note: comment,
+            shipping: 0,
+            detail_url: url
         }, i = 0; i < customerOrderInfo.length; i++) {
-        tmpObj.option = customerOrderInfo[i].option, tmpObj.image = null;
-        var optionKeys = Object.keys(tmpObj.option);
+        tmpObj.options_selected = customerOrderInfo[i].option, tmpObj.image = null;
+        var optionKeys = Object.keys(tmpObj.options_selected);
         for (j = 0; j < optionKeys.length; j++) {
-            var tmpImg, val = tmpObj.option[optionKeys[j]];
+            var tmpImg, val = tmpObj.options_selected[optionKeys[j]];
             try {
-                tmpImg = objLeading.querySelector('img[alt=\'' + val + '\']'), tmpImg.hasAttribute('data-lazy-src') ? tmpObj.image = tmpImg.getAttribute('data-lazy-src') : tmpObj.image = tmpImg.getAttribute('src')
+                tmpImg = objLeading.querySelector('img[alt=\'' + val + '\']'), tmpImg.hasAttribute('data-lazy-src') ? tmpObj.image_url = tmpImg.getAttribute('data-lazy-src') : tmpObj.image_url = tmpImg.getAttribute('src')
             } catch (err) {}
             try {
-                tmpImg = objSku.querySelector('img[alt=\'' + val + '\']'), tmpImg.hasAttribute('data-lazy-src') ? tmpObj.image = tmpImg.getAttribute('data-lazy-src') : tmpObj.image = tmpImg.getAttribute('src')
+                tmpImg = objSku.querySelector('img[alt=\'' + val + '\']'), tmpImg.hasAttribute('data-lazy-src') ? tmpObj.image_url = tmpImg.getAttribute('data-lazy-src') : tmpObj.image_url = tmpImg.getAttribute('src')
             } catch (err) {}
         }
-        tmpObj.image ? tmpObj.image = tmpObj.image.replace(/\.(\d+)x(\d+)\.jpg/, '.jpg') : tmpObj.image = mainImage, tmpObj.price = null;
+        tmpObj.image_url ? tmpObj.image_url = tmpObj.image_url.replace(/\.(\d+)x(\d+)\.jpg/, '.jpg') : tmpObj.image_url = mainImage, tmpObj.price = null;
         var tmptrs = document.querySelector('div.mod-detail-purchasing').querySelector('div.obj-sku');
         for (tmptrs = tmptrs.querySelector('.table-sku').getElementsByTagName('tr'), j = 0; j < tmptrs.length; j++)
-            if (dataSkuConfig = JSON.parse(tmptrs[j].getAttribute('data-sku-config')), dataSkuConfig.skuName === tmpObj.option[optionLabels[optionLabels.length - 1]]) {
+            if (dataSkuConfig = JSON.parse(tmptrs[j].getAttribute('data-sku-config')), dataSkuConfig.skuName === tmpObj.options_selected[optionLabels[optionLabels.length - 1]]) {
                 tmpObj.price = parseFloat(tmptrs[j].querySelector('td.price').querySelector('em.value').textContent.trim());
                 break
             }
@@ -73,8 +78,8 @@ function crawlInfo1688(responseHTML) {
     }
     var optionJsonStr;
     for (i = 0; i < data.data.length; i++) {
-        for (optionJsonStr = '', j = 0; j < optionLabels.length; j++) optionJsonStr = optionJsonStr + optionLabels[j] + ':' + data.data[i].option[optionLabels[j]], j < optionLabels.length - 1 && (optionJsonStr += ';');
-        data.data[i].option = optionJsonStr
+        for (optionJsonStr = '', j = 0; j < optionLabels.length; j++) optionJsonStr = optionJsonStr + optionLabels[j] + ':' + data.data[i].options_selected[optionLabels[j]], j < optionLabels.length - 1 && (optionJsonStr += ';');
+        data.data[i].options_selected = optionJsonStr
     }
     return data
 }
