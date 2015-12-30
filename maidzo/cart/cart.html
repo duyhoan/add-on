@@ -1,48 +1,113 @@
-<div ng-controller="CartController as vm">
-    <md-content layout-padding ng-if="vm.cart.getTotalItems() > 0">
-        <div layout="column">
-            <p class="md-subhead">Bạn hiện có <span class="mdc-text-red">{{vm.cart.getTotalItems()}}</span> sản phẩm với tổng trị giá <span class="mdc-text-red">{{vm.totalPrice | currency:'cny'}} (~{{vm.totalPrice | exchange:vm.exchangeRate}})</span> trong giỏ hàng.</p>
-            <ul style="padding-left:20px;margin-top:0px;">
-                <li style="padding-bottom:5px;"><em>Tỉ giá quy đổi hôm nay là: <strong>{{1 | currency:'cny'}} = {{vm.exchangeRate | currency:'vnd'}}</strong></em></li>
-                <li style="padding-bottom:5px;"><em><strong>Phí vận chuyển nội địa</strong> chỉ mang tính tương đối và có thể <strong>thấp hơn</strong> nếu <strong>nhiều sản phẩm</strong> được mua <strong>cùng cửa hàng</strong>, chúng tôi sẽ báo giá cụ thể sau khi nhận được đơn hàng.</em></li>
-                <li style="padding-bottom:5px;"><em>Báo giá dưới đây chưa bao gồm <strong>phí dịch vụ</strong> đặt hàng.</em></li>
-            </ul>
-        </div>
-
-        <md-list>
-            <md-list-item class="md-4-line" ng-repeat="item in vm.cart.getItems()">
-                <img ng-src="{{item.getData().image}}" class="md-avatar">
-                <div class="md-list-item-text">
-                    <h4 style="margin:5px 0px;">
-                        <a class="mdc-text-red" href="{{item.getData().detail_url}}" target="_blank" style="text-decoration:none;">{{item.getName()}}</a>
-                    </h4>
-                    <h4 style="margin:5px 0px;">{{item.getData().options}}</h4>
-                    <p style="margin:5px 0px;">
-                        Số lượng: <span class="mdc-text-green">{{item.getQuantity()}}</span>
-                        Đơn giá: <span class="mdc-text-green">{{item.getPrice() | currency:'cny'}}</span>
-                        Phí vc: <span class="mdc-text-green">{{item.getData().shipping | currency:'cny'}}
-                    </p>
-                    <p style="margin:5px 0px;">
-                        Thành tiền:
-                        (({{item.getPrice()}} x {{item.getQuantity()}}) + {{item.getData().shipping}}) x {{vm.exchangeRate}}
-                        =
-                        <span class="mdc-text-red"><strong>{{(item.getPrice() * item.getQuantity()) + item.getData().shipping | exchange:vm.exchangeRate}}</strong></span>
-                    </p>
-                    <p style="margin:5px 0px;" ng-if="item.getData().comment">Ghi chú: <span class="mdc-text-green">{{item.getData().comment}}</span></p>
+<div ng-controller="CartController as vm" class="order-meox">
+    <div class="tab-pane active" role="tabpanel" id="step1">
+        <h1 class="text-center" ng-hide="vm.cart.getTotalItems() > 0"><small>Giỏ hàng hiện đang rỗng</small></h1>
+        <div class="panel panel-info" ng-show="vm.cart.getTotalItems() > 0">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h5><span class="glyphicon glyphicon-shopping-cart"></span> Giỏ hàng ({{vm.cart.getTotalItems()}} sản phẩm)</h5>
+                        </div>
+                    </div>
                 </div>
-                <md-button class="md-secondary md-icon-button" aria-label="Xóa khỏi giỏ" ng-click="vm.sendDeleteMsgToBackground(item.getData().cart_id,item.getId())">
-                    <md-tooltip md-direction="left" md-visible="tooltipVisible">Xóa khỏi giỏ</md-tooltip>
-                    <md-icon>delete</md-icon>
-                </md-button>
-                <md-divider md-inset ng-if="!$last"></md-divider>
-            </md-list-item>
-        </md-list>
-    </md-content>
-
-    <md-content layout-padding ng-if="vm.cart.getTotalItems() === 0">
-        <div layout="column" layout-align="center center">
-            <md-icon style="font-size:48px; margin-bottom:10px;">shopping_cart</md-icon>
-            <h2 class="mdc-text-red">Chưa có sản phẩm trong giỏ hàng</h2>
+            </div>
+            <div class="panel-body">
+                <form role="form">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="cart-item-title">
+                                <th><strong>Ảnh</strong></th>
+                                <th><strong>Tên sản phẩm</strong></th>
+                                <th><strong>Tùy chọn</strong></th>
+                                <th><strong>Số lượng</strong></th>
+                                <th><strong>Giá SP</strong></th>
+                                <th><strong>Phí VCND</strong></th>
+                                <th><strong>Phí DV</strong></th>
+                                <th><strong>Giá tạm tính</strong></th>
+                                <th><strong>Xóa</strong></th>
+                            </thead>
+                            <tr ng-repeat="item in vm.cart.getItems()">
+                                <td class="col-xs-1">
+                                    <img class="img-responsive img-rounded img-thumbnail odmx-image" ng-src="{{item.getData().image}}">
+                                </td>
+                                <td class="col-xs-3">
+                                    <h5 class="product-name"><a href="{{item.getData().detail_url}}" target="_blank"><strong ng-bind="item.getName()"></strong></a></h5>
+                                    <!-- <h4><a ng-click="expandNote()" class="note-toggle"><span class="glyphicon glyphicon-pencil"></span> Thêm ghi chú </a></h4> -->
+                                    <textarea ng-show="item.getData().comment" cols="30" rows="3" placeholder="Ghi chú" ng-model="item.getData().comment" class="form-control"></textarea>
+                                </td>
+                                <td>
+                                    <!-- <label>
+                                                    <h6><input type="checkbox" ng-model="cartItem.fragile">
+                                                    <strong> Dễ vỡ</strong>
+                                                    </h6>
+                                                </label>
+                                                <label>
+                                                    <h6><input type="checkbox" ng-model="cartItem.insurance">
+                                                    <strong> Bảo hiểm(+3%)</strong>
+                                                    </h6>
+                                                </label> -->
+                                </td>
+                                <td class="col-xs-1">
+                                    <div class="form-control" ng-bind="item.getQuantity()" />
+                                    <!-- <div class="cart-item-option" ng-bind-html="cartItem.options_selected | parseItemOption"></div> -->
+                                    <div class="cart-item-option" ng-bind-html="item.getData().options"></div>
+                                </td>
+                                <td>
+                                    <h6 class="text-danger odmx-price">
+                                                    <!-- <strong ng-bind="cartItem.price | currency:' ':2"></strong> <strong ng-bind="cartItem
+                                                    .currency | getCurrencySymbol"></strong> -->
+                                                    <strong ng-bind="item.getPrice() | currency:'cny'"></strong>
+                                                </h6>
+                                </td>
+                                <td>
+                                    <h6 class="text-danger odmx-price">
+                                                    <!-- <strong>{{item.getData().shipping | currency:'cny'}} <span ng-bind="cartItem.currency | getCurrencySymbol"></span></strong> -->
+                                                    <strong>{{item.getData().shipping | currency:'cny'}}</strong>
+                                                </h6>
+                                </td>
+                                <td>
+                                    <h6 class="text-danger odmx-price">
+                                                    <!-- <strong>{{cartItem.service_charge | currency:' ':2}} <span ng-bind="cartItem.currency | getCurrencySymbol"></span></strong> -->
+                                                    <!-- <strong>{{cartItem.service_charge | currency:' ':2}} </strong> -->
+                                                </h6>
+                                    <!-- <div class="hover-content">
+                                                    <div>{{cartItem | getVNDServiceCharge | currency:' ':2}} đ</span>
+                                                    </div>
+                                                </div> -->
+                                </td>
+                                <td>
+                                    <h6 class="text-danger odmx-price">
+                                                    <!-- <strong>{{cartItem | getTotalPrice | currency: ' ':2}} <span ng-bind="cartItem.currency | getCurrencySymbol"></span></strong> -->
+                                                    <strong>{{(item.getPrice() * item.getQuantity()) + item.getData().shipping | exchange:vm.exchangeRate}}</strong>
+                                                </h6>
+                                    <!-- <div class="hover-content">
+                                                    <div><span ng-bind="cartItem | getVNDPrice | currency:' ':2"></span><span> đ</span></div>
+                                                </div> -->
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-link btn-xs" ng-click="vm.sendDeleteMsgToBackground(item.getData().cart_id,item.getId())">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-6 pull-left ">
+                            Tỉ giá:
+                            <ul>
+                                <!-- <li ng-repeat="rate in rates" ng-show="rate.code!='VND'">{{vm.code}}: {{vm.exchange_rate}} đ</li> -->
+                                <li>{{vm.code}}: {{vm.exchange_rate}} đ</li>
+                            </ul>
+                        </div>
+                        <!-- <div class='col-xs-6 text-right' ng-bind-html="cartItems | getPricesByCurrency"></div>
+                                    <h4 class="text-right">Tổng đơn hàng: <strong class="text-danger" ng-bind="getTotalPrice() | currency:' ':2"></strong> <strong class="text-danger"> đ </strong></h4> -->
+                    </div>
+                </div>
+            </div>
         </div>
-    </md-content>
+    </div>
 </div>
+

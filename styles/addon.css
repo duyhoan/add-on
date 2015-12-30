@@ -22,14 +22,20 @@
     height: 60px;
     width: 100%;
     padding-top: 10px;
-    color: #fff;
-    background-color: #37474F;
+    color: #149c82;
+    background-color: #f8f8f8;
+    border-top: 2px solid #149c82;
     position: fixed;
     bottom: 0px;
 }
 
 .mzToolbarWrapper button {
   border: 2px solid !important;
+}
+
+.mzToolbarWrapper img {
+  height: 45px;
+  margin-top: 5px;
 }
 
 #orderNoteTextarea {

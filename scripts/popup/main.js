@@ -23,8 +23,14 @@ function() {
     function localStorage(localStorageServiceProvider) {
         localStorageServiceProvider.setPrefix('maidzo')
     }
+
+    function themeConfig(mdThemingProvider) {
+         mdThemingProvider.theme('default')
+            .warnPalette('teal');
+    }
+    themeConfig.$inject = ['$mdThemingProvider']
     localStorage.$inject = ['localStorageServiceProvider'];
-    angular.module('maidzo').config(urlSafe).config(authConfig).config(loaderConfig).config(localStorage)
+    angular.module('maidzo').config(urlSafe).config(authConfig).config(loaderConfig).config(localStorage).config(themeConfig)
 }(),
 function() {
     'use strict';
